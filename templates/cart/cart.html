@@ -4,7 +4,7 @@
 {% block content %}
     <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
       <div class="container">
-        <div class="row no-gutte$ slider-text align-items-center justify-content-center">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
           	<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'home' %}">Home</a></span> <span>Cart</span></p>
             <h1 class="mb-0 bread">My Cart</h1>
@@ -15,8 +15,20 @@
 
     <section class="ftco-section ftco-cart">
 			<div class="container">
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        {% endif %}
+
 				<div class="row">
     			<div class="col-md-12 ftco-animate">
+            {% if cart_items %}
     				<div class="cart-list">
 	    				<table class="table">
 						    <thead class="thead-primary">
@@ -30,52 +42,51 @@
 						      </tr>
 						    </thead>
 						    <tbody>
+                  {% for item in cart_items %}
 						      <tr class="text-center">
-						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+						        <td class="product-remove">
+                        <a href="{% url 'remove-from-cart' item.id %}" onclick="return confirm('Are you sure you want to remove this item?')">
+                          <span class="ion-ios-close"></span>
+                        </a>
+                      </td>
 
-						        <td class="image-prod"><div class="img" style="background-image:url({% static 'images/product-3.jpg' %});"></div></td>
+						        <td class="image-prod">
+                        <div class="img" style="background-image:url({{ item.product.photo.url }});"></div>
+                      </td>
 
 						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
+						        	<h3>{{ item.product.name }}</h3>
+						        	<p>{{ item.product.details|truncatewords:15 }}</p>
 						        </td>
 
-						        <td class="price">₹409</td>
+						        <td class="price">₹{{ item.product.price }}</td>
 
 						        <td class="quantity">
-						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-					          	</div>
+                        <form method="POST" action="{% url 'update-cart-item' item.id %}">
+                          {% csrf_token %}
+						        	  <div class="input-group mb-3">
+					             	    <input type="number" name="quantity" class="quantity form-control input-number" value="{{ item.quantity }}" min="1" max="100">
+                            <button type="submit" class="btn btn-sm btn-primary ml-2">Update</button>
+					          	  </div>
+                        </form>
 					          </td>
 
-						        <td class="total">₹409</td>
-						      </tr><!-- END TR-->
-
-						      <tr class="text-center">
-						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-						        <td class="image-prod"><div class="img" style="background-image:url({% static 'images/product-4.jpg' %});"></div></td>
-
-						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
-						        </td>
-
-						        <td class="price">₹1,311</td>
-
-						        <td class="quantity">
-						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-					          	</div>
-					          </td>
-
-						        <td class="total">₹1,311</td>
-						      </tr><!-- END TR-->
+						        <td class="total">₹{{ item.get_subtotal }}</td>
+						      </tr>
+                  {% endfor %}
 						    </tbody>
 						  </table>
 					  </div>
+            {% else %}
+            <div class="alert alert-info text-center">
+              <h4>Your cart is empty!</h4>
+              <p><a href="{% url 'shop' %}" class="btn btn-primary mt-3">Continue Shopping</a></p>
+            </div>
+            {% endif %}
     			</div>
     		</div>
+
+        {% if cart_items %}
     		<div class="row justify-content-end">
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
@@ -88,7 +99,7 @@
 	              </div>
 	            </form>
     				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
+    				<p><a href="#" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
     			</div>
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
@@ -109,14 +120,14 @@
 	              </div>
 	            </form>
     				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
+    				<p><a href="#" class="btn btn-primary py-3 px-4">Estimate</a></p>
     			</div>
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
     					<h3>Cart Totals</h3>
     					<p class="d-flex">
     						<span>Subtotal</span>
-    						<span>₹1,720</span>
+    						<span>₹{{ cart_total }}</span>
     					</p>
     					<p class="d-flex">
     						<span>Delivery</span>
@@ -124,17 +135,19 @@
     					</p>
     					<p class="d-flex">
     						<span>Discount</span>
-    						<span>₹250</span>
+    						<span>₹0</span>
     					</p>
     					<hr>
     					<p class="d-flex total-price">
     						<span>Total</span>
-    						<span>₹1,470</span>
+    						<span>₹{{ cart_total }}</span>
     					</p>
     				</div>
     				<p><a href="{% url 'checkout' %}" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+            <p><a href="{% url 'clear-cart' %}" class="btn btn-outline-danger py-3 px-4" onclick="return confirm('Are you sure you want to clear your cart?')">Clear Cart</a></p>
     			</div>
     		</div>
+        {% endif %}
 			</div>
 		</section>
 
@@ -142,8 +155,8 @@
       <div class="container py-4">
         <div class="row d-flex justify-content-center py-5">
           <div class="col-md-6">
-          	<h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-          	<span>Get e-mail updates about our latest shops and special offe$</span>
+          	<h2 style="font-size: 22px;" class="mb-0">Subscribe to our Newsletter</h2>
+          	<span>Get e-mail updates about our latest shops and special offers</span>
           </div>
           <div class="col-md-6 d-flex align-items-center">
             <form action="#" class="subscribe-form">
@@ -156,40 +169,4 @@
         </div>
       </div>
     </section>
-    <script>
-  		$(document).ready(function(){
-
-  		var quantitiy=0;
-  		   $('.quantity-right-plus').click(function(e){
-
-  		        // Stop acting like a button
-  		        e.preventDefault();
-  		        // Get the field name
-  		        var quantity = pa$eInt($('#quantity').val());
-
-  		        // If is not undefined
-
-  		            $('#quantity').val(quantity + 1);
-
-
-  		            // Increment
-
-  		    });
-
-  		     $('.quantity-left-minus').click(function(e){
-  		        // Stop acting like a button
-  		        e.preventDefault();
-  		        // Get the field name
-  		        var quantity = pa$eInt($('#quantity').val());
-
-  		        // If is not undefined
-
-  		            // Increment
-  		            if(quantity>0){
-  		            $('#quantity').val(quantity - 1);
-  		            }
-  		    });
-
-  		});
-  	</script>
 {% endblock %}

@@ -4,7 +4,7 @@
 {% block content %}
     <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
       <div class="container">
-        <div class="row no-gutte$ slider-text align-items-center justify-content-center">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
           	<p class="breadcrumbs"><span class="mr-2"><a href="{% url 'home' %}">Home</a></span> <span class="mr-2"><a href="{% url 'shop' %}">Product</a></span> <span>Product Single</span></p>
             <h1 class="mb-0 bread">Product Single</h1>
@@ -15,9 +15,20 @@
 
     <section class="ftco-section">
     	<div class="container">
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        {% endif %}
+
     		<div class="row">
     			<div class="col-lg-6 mb-5 ftco-animate">
-    				<a href="{{ product.photo.url }}" class="image-popup"><img src="{{ product.photo.url }}" class="img-fluid" alt="Colorlib Template"></a>
+    				<a href="{{ product.photo.url }}" class="image-popup"><img src="{{ product.photo.url }}" class="img-fluid" alt="{{ product.name }}"></a>
     			</div>
     			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
     				<h3>{{ product.name }}</h3>
@@ -72,7 +83,7 @@
 	          		<p style="color: #000;">600 kg available</p>
 	          	</div>
           	</div>
-          	<p><a href="{% url 'cart' %}" class="btn btn-black py-3 px-5">Add to Cart</a></p>
+           	<p><a href="{% url 'add-to-cart' product.id %}?next=product-details&product_id={{ product.id }}" class="btn btn-black py-3 px-5">Add to Cart</a></p>
     			</div>
     		</div>
     	</div>
@@ -93,7 +104,7 @@
           {% for rel_product in related_products %}
     			<div class="col-md-6 col-lg-3 ftco-animate">
     				<div class="product">
-    					<a href="{% url 'product-details' rel_product.id %}" class="img-prod"><img class="img-fluid" src="{{ rel_product.photo.url }}" alt="Colorlib Template">
+    					<a href="{% url 'product-details' rel_product.id %}" class="img-prod"><img class="img-fluid" src="{{ rel_product.photo.url }}" alt="{{ rel_product.name }}">
     						<span class="status">30%</span>
     						<div class="overlay"></div>
     					</a>
@@ -101,18 +112,18 @@
     						<h3><a href="{% url 'product-details' rel_product.id %}">{{ rel_product.name }}</a></h3>
     						<div class="d-flex">
     							<div class="pricing">
-	    						<p class="price"><span class="mr-2 price-dc">₹{{ rel_product.price }}</span><span class="price-sale">₹{{ rel_product.price }}</span></p>
+	    						<p class="price"><span>₹{{ rel_product.price }}</span></p>
 	    					</div>
     					</div>
 	    					<div class="bottom-area d-flex px-3">
 	    						<div class="m-auto d-flex">
-	    							<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+	    							<a href="{% url 'product-details' rel_product.id %}" class="add-to-cart d-flex justify-content-center align-items-center text-center" title="View Details">
 	    								<span><i class="ion-ios-menu"></i></span>
 	    							</a>
-	    							<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+	    							<a href="{% url 'add-to-cart' rel_product.id %}?next=product-details&product_id={{ product.id }}" class="buy-now d-flex justify-content-center align-items-center mx-1" title="Add to Cart">
 	    								<span><i class="ion-ios-cart"></i></span>
 	    							</a>
-	    							<a href="#" class="heart d-flex justify-content-center align-items-center ">
+	    							<a href="#" class="heart d-flex justify-content-center align-items-center" title="Add to Wishlist">
 	    								<span><i class="ion-ios-heart"></i></span>
 	    							</a>
     							</div>
@@ -130,7 +141,7 @@
         <div class="row d-flex justify-content-center py-5">
           <div class="col-md-6">
           	<h2 style="font-size: 22px;" class="mb-0">Subscribe to our Newsletter</h2>
-          	<span>Get e-mail updates about our latest shops and special offe$</span>
+          	<span>Get e-mail updates about our latest shops and special offers</span>
           </div>
           <div class="col-md-6 d-flex align-items-center">
             <form action="#" class="subscribe-form">
@@ -152,7 +163,7 @@
               // Stop acting like a button
               e.preventDefault();
               // Get the field name
-              var quantity = pa$eInt($('#quantity').val());
+              var quantity = parseInt($('#quantity').val());
 
               // If is not undefined
 
@@ -167,7 +178,7 @@
               // Stop acting like a button
               e.preventDefault();
               // Get the field name
-              var quantity = pa$eInt($('#quantity').val());
+              var quantity = parseInt($('#quantity').val());
 
               // If is not undefined
 
