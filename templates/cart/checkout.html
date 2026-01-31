@@ -17,34 +17,37 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-xl-7 ftco-animate">
-						<form action="#" class="billing-form">
+						<form method="POST" class="billing-form">
+							{% csrf_token %}
 							<h3 class="mb-4 billing-heading">Billing Details</h3>
 	          	<div class="row align-items-end">
 	          		<div class="col-md-6">
 	                <div class="form-group">
-	                	<label for="fi$tname">Firt Name</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                	<label for="first_name">First Name *</label>
+	                  <input type="text" name="first_name" class="form-control" required>
 	                </div>
 	              </div>
 	              <div class="col-md-6">
 	                <div class="form-group">
-	                	<label for="lastname">Last Name</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                	<label for="last_name">Last Name *</label>
+	                  <input type="text" name="last_name" class="form-control" required>
 	                </div>
                 </div>
                 <div class="w-100"></div>
 		            <div class="col-md-12">
 		            	<div class="form-group">
-		            		<label for="country">State / Country</label>
+		            		<label for="state">State / Country *</label>
 		            		<div class="select-wrap">
 		                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-		                  <select name="" id="" class="form-control">
-		                  	<option value="">France</option>
-		                    <option value="">Italy</option>
-		                    <option value="">Philippines</option>
-		                    <option value="">South Korea</option>
-		                    <option value="">Hongkong</option>
-		                    <option value="">Japan</option>
+		                  <select name="state" class="form-control" required>
+		                  	<option value="Maharashtra">Maharashtra</option>
+		                    <option value="Delhi">Delhi</option>
+		                    <option value="Karnataka">Karnataka</option>
+		                    <option value="Tamil Nadu">Tamil Nadu</option>
+		                    <option value="Gujarat">Gujarat</option>
+		                    <option value="Rajasthan">Rajasthan</option>
+		                    <option value="West Bengal">West Bengal</option>
+		                    <option value="Punjab">Punjab</option>
 		                  </select>
 		                </div>
 		            	</div>
@@ -52,53 +55,43 @@
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
-	                	<label for="streetaddress">Street Address</label>
-	                  <input type="text" class="form-control" placeholder="House number and street name">
+	                	<label for="address">Street Address *</label>
+	                  <input type="text" name="address" class="form-control" placeholder="House number and street name" required>
 	                </div>
 		            </div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
-	                  <input type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
+		            		<label for="apartment">Apartment (Optional)</label>
+	                  <input type="text" name="apartment" class="form-control" placeholder="Appartment, suite, unit etc">
 	                </div>
 		            </div>
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
-	                	<label for="towncity">Town / City</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                	<label for="city">Town / City *</label>
+	                  <input type="text" name="city" class="form-control" required>
 	                </div>
 		            </div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
-		            		<label for="postcodezip">Postcode / ZIP *</label>
-	                  <input type="text" class="form-control" placeholder="">
+		            		<label for="postal_code">Postcode / ZIP *</label>
+	                  <input type="text" name="postal_code" class="form-control" required>
 	                </div>
 		            </div>
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 	                <div class="form-group">
-	                	<label for="phone">Phone</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                	<label for="phone">Phone *</label>
+	                  <input type="text" name="phone" class="form-control" required>
 	                </div>
 	              </div>
 	              <div class="col-md-6">
 	                <div class="form-group">
-	                	<label for="emailaddress">Email Address</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                	<label for="email">Email Address *</label>
+	                  <input type="email" name="email" class="form-control" required>
 	                </div>
                 </div>
-                <div class="w-100"></div>
-                <div class="col-md-12">
-                	<div class="form-group mt-4">
-										<div class="radio">
-										  <label class="mr-3"><input type="radio" name="optradio"> Create an Account? </label>
-										  <label><input type="radio" name="optradio"> Ship to different address</label>
-										</div>
-									</div>
-                </div>
 	            </div>
-	          </form><!-- END -->
-					</div>
 					<div class="col-xl-5">
 	          <div class="row mt-5 pt-3">
 	          	<div class="col-md-12 d-flex mb-5">
@@ -106,20 +99,20 @@
 	          			<h3 class="billing-heading mb-4">Cart Total</h3>
 	          			<p class="d-flex">
 		    						<span>Subtotal</span>
-		    						<span>₹1,720</span>
+		    						<span>₹{{ cart_total }}</span>
 		    					</p>
 		    					<p class="d-flex">
 		    						<span>Delivery</span>
-		    						<span>₹0</span>
+		    						<span>₹{% if cart_total > 500 %}0{% else %}50{% endif %}</span>
 		    					</p>
 		    					<p class="d-flex">
 		    						<span>Discount</span>
-		    						<span>₹250</span>
+		    						<span>₹0</span>
 		    					</p>
 		    					<hr>
 		    					<p class="d-flex total-price">
 		    						<span>Total</span>
-		    						<span>₹1,470</span>
+		    						<span>₹{% if cart_total > 500 %}{{ cart_total }}{% else %}{% widthratio cart_total 1 1|add:50 %}{% endif %}</span>
 		    					</p>
 								</div>
 	          	</div>
@@ -129,34 +122,42 @@
 									<div class="form-group">
 										<div class="col-md-12">
 											<div class="radio">
-											   <label><input type="radio" name="optradio" class="mr-2"> Direct Bank Tranfer</label>
+											   <label><input type="radio" name="payment_method" value="bank_transfer" class="mr-2"> Direct Bank Transfer</label>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="col-md-12">
 											<div class="radio">
-											   <label><input type="radio" name="optradio" class="mr-2"> Check Payment</label>
+											   <label><input type="radio" name="payment_method" value="check" class="mr-2"> Check Payment</label>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="col-md-12">
 											<div class="radio">
-											   <label><input type="radio" name="optradio" class="mr-2"> Paypal</label>
+											   <label><input type="radio" name="payment_method" value="paypal" class="mr-2"> PayPal</label>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-md-12">
+											<div class="radio">
+											   <label><input type="radio" name="payment_method" value="cod" class="mr-2" checked> Cash on Delivery</label>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="col-md-12">
 											<div class="checkbox">
-											   <label><input type="checkbox" value="" class="mr-2"> I have read and accept the terms and conditions</label>
+											   <label><input type="checkbox" required class="mr-2"> I have read and accept the terms and conditions</label>
 											</div>
 										</div>
 									</div>
-									<p><a href="#"class="btn btn-primary py-3 px-4">Place an order</a></p>
+									<p><button type="submit" class="btn btn-primary py-3 px-4">Place an Order</button></p>
 								</div>
 	          	</div>
+	          </form><!-- END -->
 	          </div>
           </div> <!-- .col-md-8 -->
         </div>

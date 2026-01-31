@@ -1,0 +1,104 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-center justify-content-center">
+      <div class="col-md-9 ftco-animate text-center">
+        <p class="breadcrumbs">
+          <span class="mr-2"><a href="{% url 'home' %}">Home</a></span>
+          <span>Order Success</span>
+        </p>
+        <h1 class="mb-0 bread">Order Placed Successfully</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="ftco-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-8 ftco-animate">
+        <div class="card shadow">
+          <div class="card-body p-5 text-center">
+            <div class="mb-4">
+              <span class="icon-check" style="font-size: 80px; color: #82ae46;"></span>
+            </div>
+            <h2 class="mb-4">Thank You for Your Order!</h2>
+            <p class="lead">Your order has been placed successfully.</p>
+            
+            <div class="alert alert-success my-4">
+              <h4>Order Number: <strong>{{ order.order_number }}</strong></h4>
+            </div>
+
+            <div class="card mb-4">
+              <div class="card-body text-left">
+                <h5 class="card-title mb-3">Order Details</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p><strong>Name:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+                    <p><strong>Email:</strong> {{ order.email }}</p>
+                    <p><strong>Phone:</strong> {{ order.phone }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p><strong>Delivery Address:</strong></p>
+                    <p>{{ order.address }}{% if order.apartment %}, {{ order.apartment }}{% endif %}</p>
+                    <p>{{ order.city }}, {{ order.state }} {{ order.postal_code }}</p>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-6">
+                    <p><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+                    <p><strong>Status:</strong> <span class="badge badge-warning">{{ order.get_status_display }}</span></p>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <p><strong>Subtotal:</strong> ₹{{ order.subtotal }}</p>
+                    <p><strong>Delivery:</strong> ₹{{ order.delivery_fee }}</p>
+                    {% if order.discount > 0 %}
+                    <p><strong>Discount:</strong> -₹{{ order.discount }}</p>
+                    {% endif %}
+                    <h4><strong>Total:</strong> ₹{{ order.total }}</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body text-left">
+                <h5 class="card-title mb-3">Order Items</h5>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                      <td>{{ item.product.name }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td>₹{{ item.price }}</td>
+                      <td>₹{{ item.get_subtotal }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <a href="{% url 'home' %}" class="btn btn-primary py-3 px-5 mr-2">Continue Shopping</a>
+              <a href="{% url 'shop' %}" class="btn btn-outline-primary py-3 px-5">View Products</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

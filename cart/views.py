@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Order, OrderItem
 from shop.models import Product
+import random
+import string
 
 def get_or_create_cart(request):
     """Get or create cart for the current user/session"""
@@ -86,6 +89,67 @@ def checkout(request):
     cart = get_or_create_cart(request)
     cart_items = cart.items.all()
     
+    if not cart_items.exists():
+        messages.warning(request, 'Your cart is empty!')
+        return redirect('cart')
+    
+    if request.method == 'POST':
+        # Generate unique order number
+        order_number = 'ORD-' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+        
+        # Get form data
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        apartment = request.POST.get('apartment', '')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        postal_code = request.POST.get('postal_code')
+        payment_method = request.POST.get('payment_method', 'cod')
+        
+        # Calculate totals
+        subtotal = cart.get_total()
+        delivery_fee = 0 if subtotal > 500 else 50
+        discount = 0
+        total = subtotal + delivery_fee - discount
+        
+        # Create order
+        order = Order.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            order_number=order_number,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+            address=address,
+            apartment=apartment,
+            city=city,
+            state=state,
+            postal_code=postal_code,
+            subtotal=subtotal,
+            delivery_fee=delivery_fee,
+            discount=discount,
+            total=total,
+            payment_method=payment_method,
+        )
+        
+        # Create order items from cart items
+        for cart_item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                quantity=cart_item.quantity,
+                price=cart_item.product.price
+            )
+        
+        # Clear cart after order placement
+        cart.items.all().delete()
+        
+        messages.success(request, f'Order placed successfully! Your order number is {order_number}')
+        return redirect('order-success', order_id=order.id)
+    
     context = {
         'cart': cart,
         'cart_items': cart_items,
@@ -93,3 +157,10 @@ def checkout(request):
         'cart_count': cart.get_item_count(),
     }
     return render(request, 'cart/checkout.html', context)
+
+def order_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    context = {
+        'order': order,
+    }
+    return render(request, 'cart/order-success.html', context)
