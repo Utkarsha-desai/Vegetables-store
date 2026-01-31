@@ -59,6 +59,7 @@ git clone https://github.com/Utkarsha-desai/Vegetables-store.git
 cd Vegetables-store
 python -m venv venv
 venv\Scripts\activate   # For Windows
+pip install django-ckeditor
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
@@ -113,5 +114,6 @@ Payment gateway integration
 Deployment on cloud platform
 
 Responsive design improvements
+
 
 
