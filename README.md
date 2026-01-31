@@ -63,10 +63,18 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 
+
+
+
+
+
 💱 Currency Conversion
 
 Currency conversion logic and explanation is available in:
 📄 CURRENCY_CONVERSION.md
+
+
+
 
 🎯 Use Case
 
@@ -76,13 +84,23 @@ Django learning project
 
 Beginner-friendly CRUD application
 
+
+
+
 👩‍💻 Author
 
 Utkarsha Desai
 
+
+
+
+
 📜 License
 
 This project is created for educational and learning purposes only.
+
+
+
 
 ⭐ Future Improvements
 
@@ -95,3 +113,4 @@ Payment gateway integration
 Deployment on cloud platform
 
 Responsive design improvements
+
