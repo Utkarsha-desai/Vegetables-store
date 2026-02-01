@@ -1,18 +1,34 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
 from django.contrib import messages
 
-from .forms import ContactForm
+from openpyxl import Workbook, load_workbook
+import os
 
-# Create your views here.
 def contact_page(request):
-    form = ContactForm()
     if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.INFO, 'Submitted.')
-            return redirect('contact')
-    context = {
-        'form': form
-    }
-    return render(request, 'contact/contact.html', context)
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        # Excel file path
+        file_path = os.path.join(settings.BASE_DIR, 'contact_messages.xlsx')
+
+        # File exists असेल तर open, नाहीतर create
+        if os.path.exists(file_path):
+            wb = load_workbook(file_path)
+            ws = wb.active
+        else:
+            wb = Workbook()
+            ws = wb.active
+            ws.append(["Name", "Email", "Subject", "Message"])
+
+        # Data add
+        ws.append([name, email, subject, message])
+        wb.save(file_path)
+
+        messages.success(request, "Message sent successfully!")
+        return redirect('contact')
+
+    return render(request, 'contact/contact.html')

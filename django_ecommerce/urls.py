@@ -15,14 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
-from . import settings
+from django.shortcuts import redirect
+from django.conf import settings
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_page, name='home'),
+
+    # ✅ FIRST PAGE = LOGIN
+    path('', lambda request: redirect('login')),
+
+    # ✅ HOME PAGE (name='home' REQUIRED)
+    path('home/', views.home_page, name='home'),
+
     path('blog/', include('blog.urls')),
     path('contact/', include('contact.urls')),
     path('about/', include('about.urls')),

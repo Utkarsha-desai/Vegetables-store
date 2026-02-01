@@ -17,7 +17,7 @@ def register_view(request):
     else:
         form = RegisterForm()
     
-    return render(request, 'account/auth.html', {'form': form, 'is_login': False})
+    return render(request, 'account/login.html', {'form': form, 'is_login': False})
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -36,7 +36,7 @@ def login_view(request):
     else:
         form = LoginForm()
     
-    return render(request, 'account/auth.html', {'form': form, 'is_login': True})
+    return render(request, 'account/login.html', {'form': form, 'is_login': True})
 
 def logout_view(request):
     logout(request)

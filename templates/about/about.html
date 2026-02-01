@@ -28,19 +28,13 @@
 
 
 
-    <section class="ftco-section ftco-no-pb ftco-no-pt bg-light">
+    <section class="ftco-section mt-5 mb-5 ftco-no-pb ftco-no-pt bg-light">
 
 			<div class="container">
 
 				<div class="row">
 
 					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url({% static 'images/about.jpg' %});">
-
-						<a href="https://vimeo.com/45830194" class="icon popup-vimeo d-flex justify-content-center align-items-center">
-
-							<span class="icon-play"></span>
-
-						</a>
 
 					</div>
 
@@ -58,12 +52,15 @@
 
 	          <div class="pb-md-5">
 
-	          	<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+	          	<p>Fresh vegetables, straight from the farm.Packed with nutrition and natural taste.Bringing health and freshness to your home, every day.</p>
 
-							<p>But nothing the copy said could convince her and so it didnâ€™t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.</p>
+							<p>Eat fresh. Live healthy.Handpicked vegetables with farm-fresh quality.Because your family deserves the best.</p>
 
-							<p><a href="#" class="btn btn-primary">Shop now</a></p>
-
+							<div class="text-center mt-4">
+                <a href="{% url 'shop' %}" class="btn btn-primary px-5 py-3">
+                  Shop Now
+                </a>
+              </div>
 						</div>
 
 					</div>
@@ -73,44 +70,6 @@
 			</div>
 
 		</section>
-
-
-
-		<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
-
-      <div class="container py-4">
-
-        <div class="row d-flex justify-content-center py-5">
-
-          <div class="col-md-6">
-
-          	<h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-
-          	<span>Get e-mail updates about our latest shops and special offers</span>
-
-          </div>
-
-          <div class="col-md-6 d-flex align-items-center">
-
-            <form action="#" class="subscribe-form">
-
-              <div class="form-group d-flex">
-
-                <input type="text" class="form-control" placeholder="Enter email address">
-
-                <input type="submit" value="Subscribe" class="submit px-3">
-
-              </div>
-
-            </form>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
 
 
 
@@ -212,7 +171,7 @@
 
             <h2 class="mb-4">Our satisfied customer says</h2>
 
-            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
+            <p>“Great quality, fresh produce, and fast delivery. Highly recommended!”</p>
 
           </div>
 
@@ -240,11 +199,10 @@
 
                   <div class="text text-center">
 
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                    <p class="mb-5 pl-4 line">“Fresh vegetables every time and always delivered on time. Quality is excellent!”</p>
+                    <p class="name">Rahul Patil</p>
 
-                    <p class="name">Garreth Smith</p>
-
-                    <span class="position">Marketing Manager</span>
+                    <span class="position">Customer</span>
 
                   </div>
 
@@ -268,11 +226,11 @@
 
                   <div class="text text-center">
 
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                    <p class="mb-5 pl-4 line">“Vegetables are always fresh and hygienic. Very satisfied with the service".</p>
 
-                    <p class="name">Garreth Smith</p>
+                    <p class="name">Priya Joshi</p>
 
-                    <span class="position">Interface Designer</span>
+                    <span class="position">Customer</span>
 
                   </div>
 
@@ -294,16 +252,25 @@
 
                   </div>
 
-                  <div class="text text-center">
+                </div>
 
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              </div>
 
-                    <p class="name">Garreth Smith</p>
+              <div class="item">
 
-                    <span class="position">UI Designer</span>
+                <div class="testimony-wrap p-4 pb-5">
+
+                  <div class="user-img mb-5" style="background-image: url({% static 'images/person_1.jpg' %})">
+
+                    <span class="quote d-flex align-items-center justify-content-center">
+
+                      <i class="icon-quote-left"></i>
+
+                    </span>
 
                   </div>
 
+                
                 </div>
 
               </div>
@@ -324,39 +291,11 @@
 
                   <div class="text text-center">
 
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                    <p class="mb-5 pl-4 line">“Best place to buy farm-fresh vegetables online. Prices are fair and quality is amazing.”</p>
 
-                    <p class="name">Garreth Smith</p>
+                    <p class="name">Sneha Kulkarni</p>
 
-                    <span class="position">Web Developer</span>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="item">
-
-                <div class="testimony-wrap p-4 pb-5">
-
-                  <div class="user-img mb-5" style="background-image: url({% static 'images/person_1.jpg' %})">
-
-                    <span class="quote d-flex align-items-center justify-content-center">
-
-                      <i class="icon-quote-left"></i>
-
-                    </span>
-
-                  </div>
-
-                  <div class="text text-center">
-
-                    <p class="mb-5 pl-4 line">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-
-                    <p class="name">Garreth Smith</p>
-
-                    <span class="position">System Analyst</span>
+                    <span class="position">Custmoer</span>
 
                   </div>
 

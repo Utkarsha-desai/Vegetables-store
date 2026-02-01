@@ -27,3 +27,4 @@ def product_details(request, product_id):
 
 def wishlist(request):
     return render(request, 'shop/wishlist.html')
+
