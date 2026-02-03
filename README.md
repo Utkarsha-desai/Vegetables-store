@@ -3,14 +3,15 @@
 A **Django-based web application** for managing and selling vegetables online.
 Beginner-friendly CRUD project with **responsive UI**, image upload, and basic currency conversion.
 
----
-
 ## 📌 Project Overview
 
 **Vegetables Store** lets users view, add, update, and delete vegetables.
 Built for learning Django fundamentals: models, views, templates, static files, media handling, and responsiveness.
 
----
+Demo Video link: https://drive.google.com/file/d/1s7DaDw-G10-8BOYicR0hsnO8hCKdgh8s/view?pli=1
+Report link : https://drive.google.com/file/d/103ymce9VWwW4pumvHUuGWPGEyJEpQbL2/view
+
+
 
 ## ✨ Features
 
@@ -204,3 +205,4 @@ Educational and learning purposes only.
 * Payment gateway
 * Cloud deployment
 * More responsive polish
+
